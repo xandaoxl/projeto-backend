@@ -3,7 +3,7 @@ const { Sequelize, DataTypes } = require('sequelize');
 
 const sequelize = new Sequelize(uri, {logging: console.log});
 
-// Criando a tabela produtos
+//Criando a tabela produtos
 const Product = sequelize.define('Product', {
     id: {
       type: DataTypes.INTEGER,
@@ -43,12 +43,12 @@ const Product = sequelize.define('Product', {
       allowNull: false
     }
   }, {
-    timestamps: true // Define se a tabela deve ter colunas `createdAt` e `updatedAt`
+    timestamps: true //Define se a tabela deve ter colunas `createdAt` e `updatedAt`
   });
  
-// Estabelece a relação de chave estrangeira
+//Estabelece a relação de chave estrangeira
 
-// Criando a tabela Produtos Options
+//Criando a tabela Produtos Options
 const ProductOption = sequelize.define('ProductOption', {
   id: {
     type: DataTypes.INTEGER,
@@ -58,10 +58,10 @@ const ProductOption = sequelize.define('ProductOption', {
   product_id: {
     type: DataTypes.INTEGER,
     references: {
-      model: Product, // Nome do modelo
+      model: Product, //Nome do modelo
       key: 'id'
     },
-    onDelete: 'CASCADE', // Deleta opções quando o produto é deletado
+    onDelete: 'CASCADE', //Deleta opções quando o produto é deletado
     allowNull: false
   },
   title: {
@@ -85,14 +85,14 @@ const ProductOption = sequelize.define('ProductOption', {
     allowNull: false
   }
 }, {
-  timestamps: true // Define se a tabela deve ter colunas `createdAt` e `updatedAt`
+  timestamps: true //Define se a tabela deve ter colunas `createdAt` e `updatedAt`
 });
 
-// Estabelece a relação de chave estrangeira
+//Estabelece a relação de chave estrangeira
 Product.hasMany(ProductOption, { foreignKey: 'product_id' });
 ProductOption.belongsTo(Product, { foreignKey: 'product_id' });
 
-// Criando a tabela Produtos Images
+//Criando a tabela Produtos Images
 const ProductImage = sequelize.define('ProductImage', {
   id: {
     type: DataTypes.INTEGER,
@@ -102,10 +102,10 @@ const ProductImage = sequelize.define('ProductImage', {
   product_id: {
     type: DataTypes.INTEGER,
     references: {
-      model: Product, // Nome do modelo
+      model: Product, //Nome do modelo
       key: 'id'
     },
-    onDelete: 'CASCADE' // Deleta imagens quando o produto é deletado
+    onDelete: 'CASCADE' //Deleta imagens quando o produto é deletado
   },
   enabled: {
     type: DataTypes.BOOLEAN,
@@ -116,15 +116,15 @@ const ProductImage = sequelize.define('ProductImage', {
     allowNull: false
   }
 }, {
-  timestamps: true // Define se a tabela deve ter colunas `createdAt` e `updatedAt`
+  timestamps: true //Define se a tabela deve ter colunas `createdAt` e `updatedAt`
 });
 
-// Estabelece a relação de chave estrangeira
+//Estabelece a relação de chave estrangeira
 Product.hasMany(ProductImage, { foreignKey: 'product_id' });
 ProductImage.belongsTo(Product, { foreignKey: 'product_id' });
 
-// Sincronizar o modelo com o banco de dados    
-sequelize.sync({alter: true}); // Usa alter para ajustar a tabela existente
+//Sincronizar o modelo com o banco de dados    
+sequelize.sync({alter: true}); //Usa alter para ajustar a tabela existente
 
 module.exports ={
   Product, ProductImage, ProductOption

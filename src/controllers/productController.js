@@ -2,13 +2,13 @@ const { types } = require('pg');
 const {Product, ProductImage, ProductOption} = require('../models/product');
 const { Category } = require('../models/category');
 
-// Adicionar uma novo produto
+//Adicionar uma novo produto
 const CreateProduct = async (req, res) => {
     try {
         const result = await Product.create(req.body);
         const category_ids = await result.addCategories(req.body.category_ids);
         
-        // Preparar as imagens e criar registros na tabela ProductImage
+        //Preparar as imagens e criar registros na tabela ProductImage
         const images = await ProductImage.bulkCreate(
             req.body.images.map((image) => ({
                 product_id: result.id,
@@ -55,7 +55,7 @@ const CreateProduct = async (req, res) => {
     } 
   };
   
-// Buscar todos os produtos
+//Buscar todos os produtos
 const SearchProductAll = async (req, res) => {
     try {
         
@@ -63,12 +63,12 @@ const SearchProductAll = async (req, res) => {
         const limit = Number(req.query.limit || 30);
         const offset = (page - 1) * limit;
         const fields = req.query.fields
-        // Configurar a seleção de campos
+        //Configurar a seleção de campos
         let attributes = fields ? fields.split(',') : [];
         const includeImages = !fields ||attributes.includes('images');
         const includeOptions = !fields || attributes.includes('options');
 
-        // Remover 'images' e 'options' dos campos, já que eles precisam de manipulação especial
+        //Remover 'images' e 'options' dos campos, já que eles precisam de manipulação especial
         if (attributes) {
             attributes = attributes.filter(field => field !== 'images' && field !== 'options');
         }
@@ -80,7 +80,7 @@ const SearchProductAll = async (req, res) => {
         const data = await Promise.all(products.map(async product => {
             let productData = product.toJSON();
 
-            // Incluir imagens se solicitado
+            //Incluir imagens se solicitado
             if (includeImages) {
                 const images = await ProductImage.findAll({
                     where: { product_id: product.id }
@@ -91,7 +91,7 @@ const SearchProductAll = async (req, res) => {
             const categories = await product.getCategories(); // Usando o método de associação
             productData.categories = categories.map(category => category.toJSON());
 
-            // Incluir opções se solicitado
+            //Incluir opções se solicitado
             if (includeOptions) {
                 const options = await ProductOption.findAll({
                     where: { product_id: product.id }
@@ -111,7 +111,7 @@ const SearchProductAll = async (req, res) => {
     }
 };
 
-// Buscar um produtos por ID
+//Buscar um produtos por ID
 const SearchProductId =  async (req, res) => {
     try {
         Product.findOne({ where: { id: req.params.id } }).then((result) => res.send(result))
@@ -120,7 +120,7 @@ const SearchProductId =  async (req, res) => {
     }
 };
 
-// Atualizar uma produtos por ID
+//Atualizar uma produtos por ID
 const UpdateProduct =  async (req, res) => {
     try {
         Product.update(req.body, { where: { id: req.params.id } }).then((result) => res.send(result))
@@ -129,7 +129,7 @@ const UpdateProduct =  async (req, res) => {
     }
 };
 
-// Deletar uma produtos por ID
+//Deletar uma produtos por ID
 const DeleteProduct =  async (req, res) => {
     try {
         Product.destroy({ where: { id: req.params.id } }).then((result) => {
