@@ -55,7 +55,7 @@ const CreateProduct = async (req, res) => {
     } 
   };
   
-//Buscar todos os produtos
+// Buscar todos os produtos
 const SearchProductAll = async (req, res) => {
     try {
         
@@ -68,7 +68,7 @@ const SearchProductAll = async (req, res) => {
         const includeImages = !fields ||attributes.includes('images');
         const includeOptions = !fields || attributes.includes('options');
 
-        //Remover 'images' e 'options' dos campos, já que eles precisam de manipulação especial
+        // Remover 'images' e 'options' dos campos, já que eles precisam de manipulação especial
         if (attributes) {
             attributes = attributes.filter(field => field !== 'images' && field !== 'options');
         }
